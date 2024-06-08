@@ -15,6 +15,21 @@ app.use('/authorapi',authorApp);
 app.use((req,res,next,err)=>{
     res.send({message:"error" ,payload:err});
 })
+//importing mongoclient
+const mongoclient=require('mongodb').MongoClient;
+//Making connection to the database
+mongoclient.connect(process.env.MONGO_URL)
+.then(client=>{
+    //get database obj
+    const blogg=client.db('blogg');
+    //get collection from database
+    const usersCollection=blogg.collection("usersCollection");
+    //share collection object with express application
+    app.set('usersCollection',usersCollection);
+    //confirm db connection status
+    console.log("DB connection successful")
+})
+.catch(err=>console.log("err in db connection",err));
 //assigning port number
 app.listen(port,()=>console.log(`server is running on port ${port}`));
 
