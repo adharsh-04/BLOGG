@@ -22,15 +22,17 @@ mongoclient.connect(process.env.MONGO_URL)
     //get collection from database
     const usersCollection=blogg.collection("usersCollection");
     const articlesCollection=blogg.collection("articlesCollection");
+    const authorsCollection=blogg.collection("authorsCollection");
     //share collection object with express application
     app.set('usersCollection',usersCollection);
     app.set('articlesCollection',articlesCollection);
+    app.set('authorsCollection',authorsCollection);
     //confirm db connection status
     console.log("DB connection successful")
 })
 .catch(err=>console.log("err in db connection",err));
 //to handle errors
-app.use((req,res,next,err)=>{
+app.use((err,req,res,next)=>{
     res.send({message:"error",payload:err.message})
 })
 //assigning port number
