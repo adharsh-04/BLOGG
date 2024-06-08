@@ -69,5 +69,14 @@ userApp.post('/login',expressAsyncHandler(async(req,res)=>{
     }
 }))
 
+
+//request handler for viewing all articles by user
+userApp.get('/articles',expressAsyncHandler(async(req,res)=>{
+    const articlesCollection=req.app.get('articlesCollection');
+    //to get all articles
+    const articlesList=await articlesCollection.find().toArray();
+    //send res
+    res.send({message:"Articles",payload:articlesList});
+}))
 //exporting the userApp
 module.exports=userApp;

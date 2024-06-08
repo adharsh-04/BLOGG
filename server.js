@@ -21,8 +21,10 @@ mongoclient.connect(process.env.MONGO_URL)
     const blogg=client.db('blogg');
     //get collection from database
     const usersCollection=blogg.collection("usersCollection");
+    const articlesCollection=blogg.collection("articlesCollection");
     //share collection object with express application
     app.set('usersCollection',usersCollection);
+    app.set('articlesCollection',articlesCollection);
     //confirm db connection status
     console.log("DB connection successful")
 })
