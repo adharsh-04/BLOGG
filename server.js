@@ -11,10 +11,7 @@ app.use(exp.json());
 app.use('/userapi',userApp);
 //if the Request starts with authorapi then direct to authorApp
 app.use('/authorapi',authorApp);
-//to handle errors
-app.use((req,res,next,err)=>{
-    res.send({message:"error" ,payload:err});
-})
+
 //importing mongoclient
 const mongoclient=require('mongodb').MongoClient;
 //Making connection to the database
@@ -30,6 +27,10 @@ mongoclient.connect(process.env.MONGO_URL)
     console.log("DB connection successful")
 })
 .catch(err=>console.log("err in db connection",err));
+//to handle errors
+app.use((req,res,next,err)=>{
+    res.send({message:"error",payload:err.message})
+})
 //assigning port number
 app.listen(port,()=>console.log(`server is running on port ${port}`));
 

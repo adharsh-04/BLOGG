@@ -1,10 +1,14 @@
 const exp=require('express');
 //importing miniExpress
 const userApp=exp.Router();
+//importing expressAsyncHandler 
+const expressAsyncHandler=require('express-async-handler')
 //testing the route
 userApp.get('/test-user',(req,res)=>{
     res.send({message:"This message is from user api"});
 })
+//import jsonwebtoken
+const jwt=require('jsonwebtoken');
 //import bcryptjs
 const bcryptjs=require('bcryptjs');
 
@@ -13,9 +17,11 @@ userApp.use((req,res,next)=>{
     usersCollection=req.app.get('usersCollection');
     next();
 })
+require('dotenv').config();
 
 //request handler for userRegistration route
-userApp.post('/user',async(req,res)=>{
+//expressAsyncHandler will handle the async errors without crashing the server
+userApp.post('/user',expressAsyncHandler(async(req,res)=>{
     //Get the body 
     const newUser=req.body;
     //check for duplicate user with same username
@@ -34,7 +40,34 @@ userApp.post('/user',async(req,res)=>{
         //send the response
         res.send({message:"user created"});
     }
-})
+}))
+
+
+//request handler for user login route
+userApp.post('/login',expressAsyncHandler(async(req,res)=>{
+    //Get the user credentials
+    const userCred=req.body;
+    //compare or find user with the username
+    const dbUser=await usersCollection.findOne({username:userCred.username});
+    //if dbuser is null
+    if(dbUser===null){
+        res.send({message:"user does not exist"})
+    }
+    else{
+        //compare the hashed password
+        const status=await bcryptjs.compare(userCred.password,dbUser.password);
+        if(status===false){
+            res.send({message:"Incorrect password"});
+        }
+        else{
+            //create json web token
+            const signedToken=jwt.sign({username:dbUser.username},process.env.SECRET_KEY,{expiresIn:20});
+            //send the response
+            res.send({message:"login success",token:signedToken,user:dbUser});
+
+        }
+    }
+}))
 
 //exporting the userApp
 module.exports=userApp;
