@@ -15,6 +15,7 @@ const bcryptjs=require('bcryptjs');
 //get usersCollection from server.js to add the data
 userApp.use((req,res,next)=>{
     usersCollection=req.app.get('usersCollection');
+    articlesCollection=req.app.get('articlesCollection');
     next();
 })
 require('dotenv').config();
@@ -77,6 +78,16 @@ userApp.get('/articles',expressAsyncHandler(async(req,res)=>{
     const articlesList=await articlesCollection.find().toArray();
     //send res
     res.send({message:"Articles",payload:articlesList});
+}))
+
+//request handler for writing comments
+userApp.post('/comment/:articleId',expressAsyncHandler(async(req,res)=>{
+    //get comment
+    const userComment=req.body;
+    const articleIdFromUrl=req.params.articleId;
+    //add comment to article of comments array
+    await articlesCollection.updateOne({articleId:articleIdFromUrl},{$addToSet:{comments:userComment}})
+    res.send({message:"comment posted"})
 }))
 //exporting the userApp
 module.exports=userApp;
