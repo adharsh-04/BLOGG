@@ -93,4 +93,14 @@ authorApp.put('/article/:articleId',expressAsyncHandler(async(req,res)=>{
 }))
 
 
+//viewing articles of his own by author by his name
+authorApp.get('/articles/:username',expressAsyncHandler(async(req,res)=>{
+    //get authorname from url
+    const authorName=req.params.username;
+    //get articles of author whose status is true
+    const articlesList=await articlesCollection.find({status:true}).toArray();
+   //send the response
+   res.send({message:"List of articles",payload:articlesList}); 
+}))
+
 module.exports=authorApp;
