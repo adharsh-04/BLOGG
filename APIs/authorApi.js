@@ -1,6 +1,7 @@
 const exp=require('express');
 const authorApp=exp.Router();
 const expressAsyncHandler=require('express-async-handler')
+const verifyToken=require('../Middlewares/verifyToken');
 //get authorsCollection from server.js
 authorApp.use((req,res,next)=>{
     authorsCollection=req.app.get('authorsCollection');
@@ -59,7 +60,7 @@ authorApp.post('/login',expressAsyncHandler(async(req,res)=>{
 }))
 
 //adding new article by author
-authorApp.post('/article',expressAsyncHandler(async(req,res)=>{
+authorApp.post('/article',verifyToken,(async(req,res)=>{
     //get new article
     
     const newArticle=req.body;
@@ -72,7 +73,7 @@ authorApp.post('/article',expressAsyncHandler(async(req,res)=>{
 }))
 
 //request handler for updating an article by author
-authorApp.put('/article',expressAsyncHandler(async(req,res)=>{
+authorApp.put('/article',verifyToken,expressAsyncHandler(async(req,res)=>{
     //get body from request 
     const modifiedArticle=req.body;
     //update article by articleid
@@ -82,7 +83,7 @@ authorApp.put('/article',expressAsyncHandler(async(req,res)=>{
 
 
 //soft deleting an article by author
-authorApp.put('/article/:articleId',expressAsyncHandler(async(req,res)=>{
+authorApp.put('/article/:articleId',verifyToken,expressAsyncHandler(async(req,res)=>{
     //get article id
     const articleFromUrl=req.params.articleId;
     //get article body
@@ -94,7 +95,7 @@ authorApp.put('/article/:articleId',expressAsyncHandler(async(req,res)=>{
 
 
 //viewing articles of his own by author by his name
-authorApp.get('/articles/:username',expressAsyncHandler(async(req,res)=>{
+authorApp.get('/articles/:username',verifyToken,expressAsyncHandler(async(req,res)=>{
     //get authorname from url
     const authorName=req.params.username;
     //get articles of author whose status is true

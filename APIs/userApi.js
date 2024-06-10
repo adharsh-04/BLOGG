@@ -3,6 +3,7 @@ const exp=require('express');
 const userApp=exp.Router();
 //importing expressAsyncHandler 
 const expressAsyncHandler=require('express-async-handler')
+const verifyToken=require('../Middlewares/verifyToken')
 //testing the route
 userApp.get('/test-user',(req,res)=>{
     res.send({message:"This message is from user api"});
@@ -72,7 +73,7 @@ userApp.post('/login',expressAsyncHandler(async(req,res)=>{
 
 
 //request handler for viewing all articles by user
-userApp.get('/articles',expressAsyncHandler(async(req,res)=>{
+userApp.get('/articles',verifyToken,expressAsyncHandler(async(req,res)=>{
     const articlesCollection=req.app.get('articlesCollection');
     //to get all articles
     const articlesList=await articlesCollection.find().toArray();
@@ -81,7 +82,7 @@ userApp.get('/articles',expressAsyncHandler(async(req,res)=>{
 }))
 
 //request handler for writing comments
-userApp.post('/comment/:articleId',expressAsyncHandler(async(req,res)=>{
+userApp.post('/comment/:articleId',verifyToken,expressAsyncHandler(async(req,res)=>{
     //get comment
     const userComment=req.body;
     const articleIdFromUrl=req.params.articleId;
