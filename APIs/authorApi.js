@@ -4,6 +4,7 @@ const expressAsyncHandler=require('express-async-handler')
 //get authorsCollection from server.js
 authorApp.use((req,res,next)=>{
     authorsCollection=req.app.get('authorsCollection');
+    articlesCollection=req.app.get('articlesCollection');
     next();
 })
 //import bcrypts
@@ -56,5 +57,20 @@ authorApp.post('/login',expressAsyncHandler(async(req,res)=>{
         }
     }
 }))
+
+//adding new article by author
+authorApp.post('/article',expressAsyncHandler(async(req,res)=>{
+    //get new article
+    
+    const newArticle=req.body;
+    //posting to articles collection
+    await articlesCollection.insertOne(newArticle);
+    //send response
+    res.send({message:"New article created"});
+
+    
+}))
+
+
 
 module.exports=authorApp;
