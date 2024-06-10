@@ -71,6 +71,26 @@ authorApp.post('/article',expressAsyncHandler(async(req,res)=>{
     
 }))
 
+//request handler for updating an article by author
+authorApp.put('/article',expressAsyncHandler(async(req,res)=>{
+    //get body from request 
+    const modifiedArticle=req.body;
+    //update article by articleid
+    await articlesCollection.updateOne({articleId:modifiedArticle.articleId},{$set:modifiedArticle});
+    res.send({message:"Article is modified"});
+}))
+
+
+//soft deleting an article by author
+authorApp.put('/article/:articleId',expressAsyncHandler(async(req,res)=>{
+    //get article id
+    const articleFromUrl=req.params.articleId;
+    //get article body
+    const articleToDelete=req.body;
+    //updating article by changing its status to false
+    await articlesCollection.updateOne({articleId:articleFromUrl},{$set:{...articleToDelete,status:false}})
+    res.send({message:"Article is removed"})
+}))
 
 
 module.exports=authorApp;
