@@ -11,13 +11,25 @@ function Signup() {
 
    async function handleFormSubmit(userObj){
     try{
+       
+        if(userObj.userType==='user'){
         let res=await axios.post('http://localhost:4000/userapi/user',userObj);
-        console.log(res);
+       
         if(res.data.message==='user created'){
             navigate('/sign-in');
         }
         else{
             setErr(res.data.message);
+        }}
+        else if(userObj.userType==='author'){
+            let res=await axios.post('http://localhost:4000/authorapi/author',userObj);
+           
+            if(res.data.message==='author registered'){
+                navigate('/sign-in');
+            }
+            else{
+                setErr(res.data.message);
+            }
         }
     }catch (error) {
         setErr(error.response.data.message);
