@@ -16,6 +16,11 @@ app.use('/authorapi',authorApp);
 //deploying react build in server
 app.use(exp.static(path.join(__dirname,'../frontend/build')))
 
+//avoiding refreshing of page
+app.use((req,res,next)=>{
+    res.sendFile(path.join(__dirname,'../frontend/build/index.html'))
+})
+
 //importing mongoclient
 const mongoclient=require('mongodb').MongoClient;
 //Making connection to the database

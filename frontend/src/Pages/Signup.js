@@ -1,14 +1,34 @@
 import React from 'react'
-import {useForm} from 'react-hook-form'
+import { useForm} from 'react-hook-form'
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
+import { useState } from 'react';
 
 function Signup() {
-    let {register,handleSubmit,}=useForm();
+    let {register,handleSubmit,formState:{errors}}=useForm();
+    let navigate=useNavigate();
+    let [err,setErr]=useState('');
 
-    function handleFormSubmit(userObj){
-        console.log(userObj);
+   async function handleFormSubmit(userObj){
+    try{
+        let res=await axios.post('http://localhost:4000/userapi/user',userObj);
+        console.log(res);
+        if(res.data.message==='user created'){
+            navigate('/sign-in');
+        }
+        else{
+            setErr(res.data.message);
+        }
+    }catch (error) {
+        setErr(error.response.data.message);
     }
+       
+    }
+  
   return (
     <div className=''>
+      
+        {err.length!==0&&<p className='text-danger text-center fs-3'>{err}</p>}
         <form className='w-50 d-block mx-auto mt-3' onSubmit={handleSubmit(handleFormSubmit)}>
             <h3 className='text-center '>Registration form</h3>
             <div className='m-3 '>
