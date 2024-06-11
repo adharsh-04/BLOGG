@@ -6,8 +6,12 @@ import {Outlet} from 'react-router-dom'
 function Root() {
   return (
     <div>
-        <Header/>
+        <div >
+<Header/>
+        </div>
+        <div style={{minHeight:"77vh"}}>
         <Outlet/>
+        </div>
         <Footer/>
         
     </div>

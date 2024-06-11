@@ -1,5 +1,6 @@
 const exp=require('express')
 const app=exp();
+const path=require('path');
 require('dotenv').config();
 const port=process.env.PORT;
 //import the APIs into server.js
@@ -11,6 +12,9 @@ app.use(exp.json());
 app.use('/userapi',userApp);
 //if the Request starts with authorapi then direct to authorApp
 app.use('/authorapi',authorApp);
+
+//deploying react build in server
+app.use(exp.static(path.join(__dirname,'../frontend/build')))
 
 //importing mongoclient
 const mongoclient=require('mongodb').MongoClient;

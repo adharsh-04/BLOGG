@@ -1,0 +1,9 @@
+#footer{
+    height: 100px;
+    background-color: #f1f1f1;
+    text-align: center;
+    line-height: 100px; /* Center text vertically */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
