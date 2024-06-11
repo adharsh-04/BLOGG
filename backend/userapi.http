@@ -1,0 +1,41 @@
+GET http://localhost:4000/userapi/test-user
+
+###
+GET http://localhost:4000/authorapi/test-author
+
+###
+POST http://localhost:4000/userapi/user
+Content-Type: application/json
+
+{
+    "userType":"user",
+    "username":"ravi",
+    "password":"ravi",
+    "email":"ravi@gmail.com"
+}
+
+//post request for user login
+###
+POST http://localhost:4000/userapi/login
+Content-Type: application/json
+
+{
+    "userType":"user",
+    "username":"ravi",
+    "password":"ravi"
+}
+
+###
+//view articles by user
+GET http://localhost:4000/userapi/articles
+
+//writing comments to an article
+###
+POST http://localhost:4000/userapi/comment/1718035989
+Content-Type: application/json
+
+{
+    
+    "username":"vikas1",
+    "comment":"It is a comment which is good and nice"
+}

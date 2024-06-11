@@ -1,0 +1,80 @@
+//Author registration route
+###
+POST http://localhost:4000/authorapi/author
+Content-Type: application/json
+
+{
+    "userType":"author",
+    "username":"vikas2",
+    "password":"vikas2",
+    "email":"vikas2@gmail.com"
+}
+
+###
+//Author login route
+POST http://localhost:4000/authorapi/login
+Content-Type: application/json
+
+{
+    "userType":"author",
+    "username":"vikas2",
+    "password":"vikas2"
+}
+
+//adding new article
+###
+POST http://localhost:4000/authorapi/article
+Content-Type: application/json
+
+{
+    "articleId":"{{$timestamp}}",
+    "title":"Fundamentals of JavaScript",
+    "category":"Programming",
+    "content":";aksdjfwiur cqwierjwqf qoiewrqwoeiirqwmnfqihewirq iodnfaerqweuroiqu aodhfieqo normal content",
+    "dateOfCreation":"{{$datetime iso8601}}",
+    "dateOfModification":"{{$datetime iso8601}}",
+    "username":"vikas1",
+    "comments":[ ],
+    "status":true
+
+}
+
+//updating the content of an article
+###
+PUT http://localhost:4000/authorapi/article
+Content-Type: application/json
+
+{
+    "articleId":"1718036007",
+    "title":"Fundamentals of JavaScript",
+    "category":"Programming",
+    "content":";aksdjfwiur cqwierjwqf qoiewrqwoeiirqwmnfqihewirq iodnfaerqweuroiqu aodhfieqo normal content prgoramming",
+    "dateOfCreation":"2024-06-10T16:13:27.633Z",
+    "dateOfModification":"{{$datetime iso8601}}",
+    "username":"vikas1",
+    "comments":[ ],
+    "status":true
+
+}
+
+//soft deleting an article by its articleid by author
+###
+PUT http://localhost:4000/authorapi/article/1718036007
+Content-Type: application/json
+
+{
+    "articleId":"1718036007",
+    "title":"Fundamentals of JavaScript",
+    "category":"Programming",
+    "content":";aksdjfwiur cqwierjwqf qoiewrqwoeiirqwmnfqihewirq iodnfaerqweuroiqu aodhfieqo normal content prgoramming",
+    "dateOfCreation":"2024-06-10T16:13:27.633Z",
+    "dateOfModification":"{{$datetime iso8601}}",
+    "username":"vikas1",
+    "comments":[ ],
+    "status":true
+
+}
+
+###
+//viewing his own article by author
+GET http://localhost:4000/authorapi/articles/vikas1
