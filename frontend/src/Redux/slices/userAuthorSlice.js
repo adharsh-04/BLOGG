@@ -73,5 +73,5 @@ export const userAuthorSlice=createSlice({
     })
 })
 
-const {resetState}=userAuthorSlice.actions;
+export const {resetState}=userAuthorSlice.actions;
 export default userAuthorSlice.reducer;
