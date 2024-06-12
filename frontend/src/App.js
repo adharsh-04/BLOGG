@@ -4,6 +4,8 @@ import Root from './Pages/Root';
 import Home from './Pages/Home';
 import Signin from './Pages/Signin';
 import Signup from './Pages/Signup';
+import UserProfile from './Pages/UserProfile';
+import AuthorProfile from './Pages/AuthorProfile';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 function App() {
 
@@ -22,7 +24,15 @@ function App() {
         },{
           path:'sign-up',
           element:<Signup/>
+        },{
+          path:'userprofile',
+          element:<UserProfile/>
+        },
+        {
+          path:'authorprofile',
+          element:<AuthorProfile/>
         }
+
       ]
     }
   ])

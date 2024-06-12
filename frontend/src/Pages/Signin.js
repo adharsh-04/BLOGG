@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {useForm} from 'react-hook-form'
+import {useNavigate} from 'react-router-dom'
+import { useDispatch,useSelector } from 'react-redux';
+import { userAuthorLoginThunk } from '../Redux/slices/userAuthorSlice';
 
 function Signin() {
     let {register,handleSubmit}=useForm();
+    let{loginUserStatus,errorOccured,errMsg}=useSelector(state=>state.userAuthorLoginReducer)
+    let dispatch=useDispatch();
+    let navigate=useNavigate();
 
     function handleFormSubmit(userObj){
         console.log(userObj);
+        dispatch(userAuthorLoginThunk(userObj));
     }
+    useEffect(()=>{
+        if(loginUserStatus===true){
+        navigate('/userprofile');}
+    },[loginUserStatus])
   return (
     <div>
         <form className='d-block mx-auto w-50 ' onSubmit={handleSubmit(handleFormSubmit)}>
