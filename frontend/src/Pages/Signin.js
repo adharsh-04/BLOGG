@@ -6,7 +6,7 @@ import { userAuthorLoginThunk } from '../Redux/slices/userAuthorSlice';
 
 function Signin() {
     let {register,handleSubmit}=useForm();
-    let{loginUserStatus,errorOccured,errMsg}=useSelector(state=>state.userAuthorLoginReducer)
+    let{loginUserStatus,errorOccured,errMsg,currentUser}=useSelector(state=>state.userAuthorLoginReducer)
     let dispatch=useDispatch();
     let navigate=useNavigate();
 
@@ -16,13 +16,17 @@ function Signin() {
     }
     useEffect(()=>{
         if(loginUserStatus===true){
+            if(currentUser.userType==='user'){
         navigate('/userprofile');}
+           else if(currentUser.userType==='author'){
+            navigate('/authorprofile');
+           }}
     },[loginUserStatus])
   return (
     <div>
-        <form className='d-block mx-auto w-50 ' onSubmit={handleSubmit(handleFormSubmit)}>
-            <h3 className='text-center '>Login form</h3>
-            <label htmlFor='userType'>Login as</label>
+        <form className='d-block mx-auto w-50 card bg-light mt-4 px-2' onSubmit={handleSubmit(handleFormSubmit)}>
+            <h3 className='text-center text-success mt-2 '>Login form</h3>
+            <label htmlFor='userType' className='mf-3 me-3'>Login as</label>
             <br></br>
             <div className='m-3 d-flex'>
                 <div className='me-3'>

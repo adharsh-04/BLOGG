@@ -1,9 +1,33 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "poppins",sans-serif;
+}
 #footer{
-    height: 100px;
-    background-color: #f1f1f1;
+    min-height: 120px;
+    background-color:#948979;
     text-align: center;
-    line-height: 100px; /* Center text vertically */
+     /* Center text vertically */
     position: relative;
     bottom: 0;
     width: 100%;
+}
+
+ul{
+    list-style-type: none;
+}
+li{
+    text-decoration: none;
+    list-style-type: none;
+    color: white;
+}
+#navlink{
+    list-style-type: none;
+    text-decoration: none;
+    color: white;
+}
+h5{
+    font-style: bold;
+    color: #ffff00cf;
 }

@@ -1,9 +1,25 @@
+*{
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
 #img{
-    width: 100px;
-    height: 80px;
+    width: 80px;
+    height: 60px;
+}
+#list{
+    list-style-type: none;
 }
 
 #link{
-    font-size: x-large;
+    font-size: large;
+    text-decoration: none;
+}
+#header{
+    background-color: #3C5B6F;
+    color: white;
+}
+
+#navlink{
     text-decoration: none;
 }

@@ -9,7 +9,7 @@ function Root() {
         <div >
 <Header/>
         </div>
-        <div style={{minHeight:"77vh"}}>
+        <div style={{minHeight:"79vh"}}>
         <Outlet/>
         </div>
         <Footer/>

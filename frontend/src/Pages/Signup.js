@@ -41,10 +41,10 @@ function Signup() {
     <div className=''>
       
         {err.length!==0&&<p className='text-danger text-center fs-3'>{err}</p>}
-        <form className='w-50 d-block mx-auto mt-3' onSubmit={handleSubmit(handleFormSubmit)}>
-            <h3 className='text-center '>Registration form</h3>
+        <form className='w-50 d-block mx-auto mt-4 card bg-light px-4' onSubmit={handleSubmit(handleFormSubmit)}>
+            <h3 className='text-center text-warning mt-2'>Registration form</h3>
             <div className='m-3 '>
-            <label htmlFor='userType form-label'>UserType</label>
+            <label htmlFor='userType form-label'>Register as</label>
             <br></br>
             <div className='d-flex '>
             <div className='me-3'>
