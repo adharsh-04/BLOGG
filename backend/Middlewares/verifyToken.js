@@ -12,6 +12,7 @@ function verifyToken(req,res,next){
         //verify the token
         try{
             jwt.verify(token,process.env.SECRET_KEY);
+            next();
         }
         catch(err){
             next(err);
