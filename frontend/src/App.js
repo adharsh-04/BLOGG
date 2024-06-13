@@ -2,6 +2,7 @@
 import './App.css';
 import Root from './Pages/Root';
 import Home from './Pages/Home';
+// import { lazy, Suspense } from 'react';
 import Signin from './Pages/Signin';
 import Signup from './Pages/Signup';
 import UserProfile from './Pages/UserProfile';
@@ -10,9 +11,13 @@ import Article from './Components/AuthorArticles/Article';
 import AddArticle from './Components/AuthorArticles/AddArticle';
 import ArticlesByAuthor from './Components/AuthorArticles/ArticlesByAuthor';
 import Articles from './Components/UserArticles/Articles';
+
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import { Navigate } from 'react-router-dom';
 import ErrorPage from './Components/ErrorPage';
+
+// //dynamic import of articles
+// const AddArticle=lazy(()=>{import( './Components/AuthorArticles/AddArticle')})
 function App() {
 
   const router=createBrowserRouter([
