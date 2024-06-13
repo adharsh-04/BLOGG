@@ -1,8 +1,12 @@
 import React from 'react'
+import { NavLink,Outlet } from 'react-router-dom'
 
 function UserProfile() {
   return (
-    <div>UserProfile</div>
+    <div className='container'>
+       <NavLink to='/userprofile/articles' className='text-primary' style={{textDecoration:"none"}}>Articles</NavLink>
+       <Outlet/>
+    </div>
   )
 }
 

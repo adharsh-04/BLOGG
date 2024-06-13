@@ -39,13 +39,10 @@ function App() {
 
             },
             {
-              path:"article/:articleId",
+              path:'article/:articleId',
               element:<Article/>
             },
-            {
-              path:'',
-              element:<Navigate to='articles'/>
-            }
+           
           ]
         },
         {
@@ -55,17 +52,15 @@ function App() {
             path:'new-article',
             element:<AddArticle/>
           },{
-            path:'articles-by-author/:author',
+            path:'articles-by-author/:username',
             element:<ArticlesByAuthor/>
           },
         {
-          path:'article/"articleId',
+          path:'article/:articleId',
           element:<Article/>
         },
-      {
-        path:'',
-        element:<Navigate to='articles-by-author/:author'/>
-      }]
+      
+     ]
         }
 
       ]
