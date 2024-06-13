@@ -85,7 +85,7 @@ userApp.get('/articles',verifyToken,expressAsyncHandler(async(req,res)=>{
 userApp.post('/comment/:articleId',verifyToken,expressAsyncHandler(async(req,res)=>{
     //get comment
     const userComment=req.body;
-    const articleIdFromUrl=req.params.articleId;
+    const articleIdFromUrl=(+req.params.articleId);
     //add comment to article of comments array
     await articlesCollection.updateOne({articleId:articleIdFromUrl},{$addToSet:{comments:userComment}})
     res.send({message:"comment posted"})

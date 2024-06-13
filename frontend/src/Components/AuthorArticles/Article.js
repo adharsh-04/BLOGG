@@ -1,14 +1,26 @@
 import React from 'react'
+import { useState } from 'react';
 import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import {useForm} from 'react-hook-form'
 import { FaEdit } from "react-icons/fa";
+import { FaUserAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { axiosWithToken } from '../AxiosWithToken';
 function Article() {
   let { state } = useLocation();
   let { currentUser } = useSelector((state) => state.userAuthorLoginReducer);
 
-  let {register}=useForm();
+  let {register,handleSubmit}=useForm();
+ let [comment,setComment]=useState("")
+  const writeComment=async(commentObj)=>{
+        commentObj.username=currentUser.username;
+       let res= await axiosWithToken.post(`http://localhost:4000/userapi/comment/${state.articleId}`,commentObj)
+       if(res.data.message==='comment posted'){
+        setComment(res.data.message);
+         
+       }
+  }
 
   return (
     <div>
@@ -30,10 +42,28 @@ function Article() {
 
 
         <p className='fs-5 lead' style={{ whiteSpace: "pre-line" }}><span className='text-danger'>Content</span>:{state.content}</p>
+        <div>
+          <div className='comments my-4'>
+            {state.comments.length===0?(
+              <p className='display-4'>No Comments Yet..</p>
+            ):(
+              state.comments.map((commentObj,ind)=>{
+                return(
+                  <div key={ind} className='bg-light p-3 card g-2'>
+                    <p className='fs-4' style={{color:"dodgerblue",textTransform:"capitalize"}}><FaUserAlt className='fs-2 me-2 btn btn-red'/><span className='text-warning'>Username</span>:{commentObj.username}</p>
+                    <p className='fs-4'  style={{fontFamily:"sans-serif"}}><span className='text-warning'>Comment</span>:{commentObj.comment}</p>
+                  </div>
+                )
+              })
+            )}
+
+          </div>
+        </div>
+        <h2>{comment}</h2>
         {currentUser.userType==='user'&&(<>
-        <form >
+        <form onSubmit={handleSubmit(writeComment)}>
           <input type='text' {...register('comment')} className='form-control mb-2' placeholder='Write comment here...'/>
-          <button className='btn btn-primary d-block mx-auto'>POST</button>
+          <button className='btn btn-primary d-block mx-auto' type='submit'>POST</button>
         </form>
         </>)}
 
