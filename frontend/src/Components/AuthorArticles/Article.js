@@ -7,6 +7,7 @@ import { FaEdit } from "react-icons/fa";
 import { FaUserAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { axiosWithToken } from '../AxiosWithToken';
+import { MdRestore } from "react-icons/md";
 function Article() {
   let navigate=useNavigate();
   let { state } = useLocation();
@@ -23,6 +24,29 @@ function Article() {
        }
   }
   let [articleeditStatus,setarticleeditStatus]=useState(false);
+  let [currentArticle,setCurrentArticle]=useState(state)
+  
+
+  const deleteArticle = async() => {
+    let art={...currentArticle};
+   
+    delete art._id;
+    let res=await axiosWithToken.put(`http://localhost:4000/authorapi/article/${currentArticle.articleId}`,art)
+    if(res.data.message==='article deleted'){
+      setCurrentArticle({...currentArticle,status:res.data.payload})
+    }
+  };
+
+  const restoreArticle =async () => {
+    let art={...currentArticle};
+    console.log("article restoring")
+    console.log(art)
+    delete art._id;
+    let res=await axiosWithToken.put(`http://localhost:4000/authorapi/article/${currentArticle.articleId}`,art)
+    if(res.data.message==='article restored'){
+      setCurrentArticle({...currentArticle,status:res.data.payload})
+    }
+  };
 
   //const enableeditstatus
   const enableeditstatus=()=>{
@@ -48,6 +72,12 @@ function Article() {
   if (!state) {
     return <div>Error: Article data is not available.</div>;
   }
+  function ISOtoUTC(iso) {
+    let date = new Date(iso).getUTCDate();
+    let month = new Date(iso).getUTCMonth()+1;
+    let year = new Date(iso).getUTCFullYear();
+    return `${date}/${month}/${year}`;
+  }
 
   return (
     <div>
@@ -57,14 +87,28 @@ function Article() {
             <div class='d-flex justify-content-end'>
 
               <button class='btn btn-warning me-2' onClick={enableeditstatus}><FaEdit /></button>
-              <button class='btn btn-danger'><MdDelete /></button>
+              {currentArticle.status === true ? (
+                    <button
+                      className="me-2 btn btn-danger"
+                      onClick={deleteArticle}
+                    >
+                      <MdDelete className="fs-2" />
+                    </button>
+                  ) : (
+                    <button
+                      className="me-2 btn btn-info"
+                      onClick={restoreArticle}
+                    >
+                      <MdRestore className="fs-2" />
+                    </button>
+                  )}
             </div>
           </>)}
             < h3 style={{ whiteSpace: "pre-line" }} className='text-center'><span className='text-danger'>Title</span>:{state.title}</h3>
         <h4 style={{ whiteSpace: "pre-line" }} ><span className='text-danger'>Category</span>:{state.category}</h4>
         <div className='d-inline g-3'>
-          <h5 style={{ whiteSpace: "pre-line" }} className='text-dark'><span className='text-primary'>DateOfCreation</span>:{state.dateOfCreation}</h5>
-          <h5 style={{ whiteSpace: "pre-line" }} className='text-dark'><span className='text-primary'>DateOfModification</span>:{state.dateOfModification}</h5>
+          <h5 style={{ whiteSpace: "pre-line" }} className='text-dark'><span className='text-primary'>DateOfCreation</span>:{ISOtoUTC(state.dateOfCreation)}</h5>
+          <h5 style={{ whiteSpace: "pre-line" }} className='text-dark'><span className='text-primary'>DateOfModification</span>:{ISOtoUTC(state.dateOfModification)}</h5>
         </div>
 
 

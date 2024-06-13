@@ -76,7 +76,7 @@ userApp.post('/login',expressAsyncHandler(async(req,res)=>{
 userApp.get('/articles',verifyToken,expressAsyncHandler(async(req,res)=>{
     const articlesCollection=req.app.get('articlesCollection');
     //to get all articles
-    const articlesList=await articlesCollection.find().toArray();
+    const articlesList=await articlesCollection.find({status:true}).toArray();
     //send res
     res.send({message:"Articles",payload:articlesList});
 }))

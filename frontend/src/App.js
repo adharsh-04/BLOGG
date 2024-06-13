@@ -42,6 +42,10 @@ function App() {
               path:'article/:articleId',
               element:<Article/>
             },
+            {
+              path:'',
+              element:<Navigate to='articles'/>
+            }
            
           ]
         },
@@ -52,7 +56,7 @@ function App() {
             path:'new-article',
             element:<AddArticle/>
           },{
-            path:'articles-by-author/:username',
+            path:'articles-by-author/:author',
             element:<ArticlesByAuthor/>
           },
         {

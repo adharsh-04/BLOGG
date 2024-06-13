@@ -8,7 +8,12 @@ function ArticlesByAuthor() {
   const [articlesList,setArticlesList]=useState([]);
   let navigate=useNavigate();
   let {currentUser}=useSelector((state)=>state.userAuthorLoginReducer);
- 
+  function ISOtoUTC(iso) {
+    let date = new Date(iso).getUTCDate();
+    let month = new Date(iso).getUTCMonth()+1;
+    let year = new Date(iso).getUTCFullYear();
+    return `${date}/${month}/${year}`;
+  }
   
   const getArticlesOfCurrentAuthor=async()=>{
     let res=await axiosWithToken.get(`http://localhost:4000/authorapi/articles/${currentUser.username}`)
@@ -43,7 +48,7 @@ function ArticlesByAuthor() {
             </div>
             <div className='card-footer'>
               <small className='text-body-secondary'>
-                Last updated on {article.dateOfModification}
+                Last updated on {ISOtoUTC(article.dateOfModification)}
               </small>
             </div>
           </div>

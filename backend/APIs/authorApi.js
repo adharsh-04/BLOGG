@@ -83,15 +83,23 @@ authorApp.put('/article',verifyToken,expressAsyncHandler(async(req,res)=>{
 }))
 
 
-//soft deleting an article by author
+//delete an article by article ID
 authorApp.put('/article/:articleId',verifyToken,expressAsyncHandler(async(req,res)=>{
-    //get article id
-    const articleFromUrl=req.params.articleId;
-    //get article body
+    //get articleId from url
+    const artileIdFromUrl=(+req.params.articleId);
+    //get article 
     const articleToDelete=req.body;
-    //updating article by changing its status to false
-    await articlesCollection.updateOne({articleId:articleFromUrl},{$set:{...articleToDelete,status:false}})
-    res.send({message:"Article is removed"})
+
+    if(articleToDelete.status===true){
+       let modifiedArt= await articlesCollection.findOneAndUpdate({articleId:artileIdFromUrl},{$set:{...articleToDelete,status:false}},{returnDocument:"after"})
+       res.send({message:"article deleted",payload:modifiedArt.status})
+    }
+    if(articleToDelete.status===false){
+        let modifiedArt= await articlesCollection.findOneAndUpdate({articleId:artileIdFromUrl},{$set:{...articleToDelete,status:true}},{returnDocument:"after"})
+        res.send({message:"article restored",payload:modifiedArt.status})
+    }
+   
+   
 }))
 
 
@@ -100,7 +108,7 @@ authorApp.get('/articles/:username',verifyToken,expressAsyncHandler(async(req,re
     //get authorname from url
     const authorName=req.params.username;
     //get articles of author whose status is true
-    const articlesList=await articlesCollection.find({status:true}).toArray();
+    const articlesList=await articlesCollection.find().toArray();
    //send the response
    res.send({message:"List of articles",payload:articlesList}); 
 }))
