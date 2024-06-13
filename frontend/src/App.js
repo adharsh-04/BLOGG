@@ -12,12 +12,14 @@ import ArticlesByAuthor from './Components/AuthorArticles/ArticlesByAuthor';
 import Articles from './Components/UserArticles/Articles';
 import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import { Navigate } from 'react-router-dom';
+import ErrorPage from './Components/ErrorPage';
 function App() {
 
   const router=createBrowserRouter([
     {
       path:'',
       element:<Root/>,
+      errorElement:<ErrorPage/>,
       children:[
         {
           path:'',
