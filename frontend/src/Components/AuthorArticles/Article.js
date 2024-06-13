@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom'
+import { useLocation,useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux';
 import {useForm} from 'react-hook-form'
 import { FaEdit } from "react-icons/fa";
@@ -8,6 +8,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { axiosWithToken } from '../AxiosWithToken';
 function Article() {
+  let navigate=useNavigate();
   let { state } = useLocation();
   let { currentUser } = useSelector((state) => state.userAuthorLoginReducer);
 
@@ -21,15 +22,41 @@ function Article() {
          
        }
   }
+  let [articleeditStatus,setarticleeditStatus]=useState(false);
+
+  //const enableeditstatus
+  const enableeditstatus=()=>{
+    setarticleeditStatus(true);
+  }
+
+  const disableeditstatus=async(editedArticle)=>{
+    let modifiedArticle={...state,...editedArticle}
+    //change dateof modification
+    modifiedArticle.dateOfModification=new Date();
+    delete modifiedArticle._id;
+  //making http request to edit article 
+    let res=await axiosWithToken.put('http://localhost:4000/authorapi/article',modifiedArticle)
+    if(res.data.message==='Article is modified'){
+      
+      setarticleeditStatus(false);
+      navigate(`/authorprofile/article/${modifiedArticle.articleId}`,{state:res.data.article});
+
+    }
+    
+  }
+  // Check if state is null or undefined
+  if (!state) {
+    return <div>Error: Article data is not available.</div>;
+  }
 
   return (
     <div>
-      <div className='card m-2 px-4 bg-light'>
+      {articleeditStatus===false?(<><div className='card m-2 px-4 bg-light'>
         <div className='card-body'>
           {currentUser.userType === 'author' && (<>
             <div class='d-flex justify-content-end'>
 
-              <button class='btn btn-warning me-2'><FaEdit /></button>
+              <button class='btn btn-warning me-2' onClick={enableeditstatus}><FaEdit /></button>
               <button class='btn btn-danger'><MdDelete /></button>
             </div>
           </>)}
@@ -68,7 +95,34 @@ function Article() {
         </>)}
 
       </div>
-    </div>
+    </div></>):
+    (<>
+     <form className='w-50 card d-block mx-auto mt-2 bg-light' onSubmit={handleSubmit(disableeditstatus)}>
+        <div className='m-3'>
+          <label className='form-label' htmlFor='title'>Title:</label>
+          <input className='form-control' type='text' id='title' placeholder='Enter title' {...register('title',{required:true})} defaultValue={state.title}/>
+        </div>
+        <div className='m-3'>
+          <label className='form-label' htmlFor='category'>
+            Category:
+            <select className='form-control mt-1'id='category' {...register('category',{required:true})} defaultValue={state.category}>
+              <option value=''>Select a Category</option>
+              <option value='programming'>programming</option>
+              <option value='science'>science</option>
+              <option value='Fashion'>Fashion</option>
+              <option value='lifeStyle'>lifeStyle</option>
+            </select>
+          </label>
+        </div>
+        <div className='m-2'>
+          <label className='form-label' >Content:</label>
+          <textarea className='form-control'  cols='40' rows='10' placeholder='Enter content'{...register('content',{required:true})} defaultValue={state.content}/>
+
+        </div>
+        <button className='btn btn-success d-block mx-auto'type='submit' >SAVE</button>
+      </form>
+    </>)}
+      
     </div >
   )
 }

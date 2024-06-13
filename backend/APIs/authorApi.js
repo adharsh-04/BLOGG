@@ -78,7 +78,8 @@ authorApp.put('/article',verifyToken,expressAsyncHandler(async(req,res)=>{
     const modifiedArticle=req.body;
     //update article by articleid
     await articlesCollection.updateOne({articleId:modifiedArticle.articleId},{$set:modifiedArticle});
-    res.send({message:"Article is modified"});
+    let latestArticle=await articlesCollection.findOne({articleId:modifiedArticle.articleId})
+    res.send({message:"Article is modified",article:latestArticle});
 }))
 
 
